@@ -4,33 +4,23 @@ using System.Net;
 using System.Runtime.InteropServices.Marshalling;
 public class Solution
 {
-    public int[] MaxSubsequence(int[] nums, int k)
-    {
-        int[]copy= (int[])nums.Clone();
-        Array.Sort(copy);
-        Array.Reverse(copy);
-        int n = 0;
-        Dictionary <int,int>store = new Dictionary<int,int>();
-        for (int i = 0; i < k; i++) {
-            if (store.ContainsKey(copy[n])) {
-                store[copy[n]]++;
+    public int[] TwoSum(int[] nums, int target)
+    {   
+        Dictionary<int,int> map = new Dictionary<int,int>();
+         
+        for (int i = 0; i < nums.Length; i++)
+        {
+            int aim = target - nums[i];
+            if (map.ContainsKey(nums[i]) && map[nums[i]]>0)
+            {
+                return new int[2] { map[aim],i};
             }
             else
             {
-                store[copy[n]] = 1;
-            }
-            n++;
-        }
-        List<int>result = new List<int>();
-        foreach (int num in nums)
-        {
-            if (store.ContainsKey(num) && store[num] > 0)
-            {
-                result.Add(num);
-                store[num] --;
+                map[aim] = i;
             }
         }
-        return result.ToArray();
+        return new int[0];
     }
 }
 class Program
