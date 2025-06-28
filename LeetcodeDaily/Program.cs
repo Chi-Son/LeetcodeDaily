@@ -1,38 +1,42 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Net;
 using System.Runtime.InteropServices.Marshalling;
 public class Solution
 {
-    public IList<int> LexicalOrder(int n)
+    public int[] MaxSubsequence(int[] nums, int k)
     {
-        int current = 1;
-        List<int> l = new List<int>();
-        for (int i = 0; i < n; i++) {
-            l.Add(current);
-            if (current * 10 <= n)
-            {
-                current *= 10;
+        int[]copy= (int[])nums.Clone();
+        Array.Sort(copy);
+        Array.Reverse(copy);
+        int n = 0;
+        Dictionary <int,int>store = new Dictionary<int,int>();
+        for (int i = 0; i < k; i++) {
+            if (store.ContainsKey(copy[n])) {
+                store[copy[n]]++;
             }
             else
             {
-                while (current%10==9|| current + 1 > n)
-                {
-                    current /= 10;
-                }
-                current++;
+                store[copy[n]] = 1;
+            }
+            n++;
+        }
+        List<int>result = new List<int>();
+        foreach (int num in nums)
+        {
+            if (store.ContainsKey(num) && store[num] > 0)
+            {
+                result.Add(num);
+                store[num] --;
             }
         }
-        return l;
+        return result.ToArray();
     }
 }
 class Program
 {
     static void Main(string[] args)
     {
-        Solution s = new Solution();
-        foreach (int num in s.LexicalOrder(30))
-        {
-            Console.Write(num + " ");
-        }
+
     }
 }
