@@ -4,23 +4,32 @@ using System.Net;
 using System.Runtime.InteropServices.Marshalling;
 public class Solution
 {
-    public int[] TwoSum(int[] nums, int target)
-    {   
-        Dictionary<int,int> map = new Dictionary<int,int>();
-         
-        for (int i = 0; i < nums.Length; i++)
+    public int NumSubseq(int[] nums, int target)
+    {
+        int MOD = 1_000_000_007;
+        int left = 0;
+        int[] pow2 = new int[nums.Length];
+        pow2[0] = 1;
+        for (int i = 1; i < nums.Length; i++)
         {
-            int aim = target - nums[i];
-            if (map.ContainsKey(nums[i]) && map[nums[i]]>0)
+            pow2[i] = (pow2[i - 1] * 2) % MOD;
+        }
+        int right = nums.Length - 1;
+        long cnt = 0;
+        Array.Sort(nums);
+        while (left <= right)
+        {
+            if (nums[left] + nums[right] <= target)
             {
-                return new int[2] { map[aim],i};
+                cnt = (cnt + pow2[right - left]) % MOD;
+                left++;
             }
             else
             {
-                map[aim] = i;
+                right--;
             }
         }
-        return new int[0];
+        return (int)cnt;
     }
 }
 class Program
